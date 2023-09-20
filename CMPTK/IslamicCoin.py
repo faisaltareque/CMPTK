@@ -194,7 +194,7 @@ class IslamicCoinCleaner:
     def to_lower(self, text):
         return text.lower()
 
-    def replace_special_wrods(text):
+    def replace_special_wrods(self, text):
         text = text.replace('islm coin', ' <COIN> ')
         text = text.replace('islamiccoin', ' <COIN> ')
         text = text.replace('islamic coin', ' <COIN> ')
@@ -205,7 +205,7 @@ class IslamicCoinCleaner:
         text = text.replace('galxe', ' <PLATFORM> ')
         return text
 
-    def replace_crypto_addresses(text, replace_with=None):
+    def replace_crypto_addresses(self, text, replace_with=None):
         # Define a regex pattern for Ethereum-style addresses
         crypto_address_pattern = r'\b0x[0-9a-fA-F]{40}\b'
 
