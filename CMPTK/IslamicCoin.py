@@ -191,7 +191,7 @@ class IslamicCoinCleaner:
         text = unidecode.unidecode(text)
         return text
 
-    def to_lower(text):
+    def to_lower(self, text):
         return text.lower()
 
     def replace_special_wrods(text):
