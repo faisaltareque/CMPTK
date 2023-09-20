@@ -10,8 +10,6 @@ STOPWORDS = set(stopwords.words('english'))
 
 class IslamicCoinCleaner:
     def __init__(self):
-        self.url_clean = re.compile(r"https://\S+|www\.\S+")
-
         self.special_tokens = {"coin":" <COIN> ", 
                                "wallet":" <WALLET> ", 
                                "platform":" <PLATFORM> ",
@@ -22,11 +20,11 @@ class IslamicCoinCleaner:
 
 
     def remove_url(self, text, replace_with=None):
-        text = self.url_clean.sub(r'',text)
+        url_pattern = r'https?://\S+|www\.\S+'
         if replace_with is None:
-            return re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+            return re.sub(url_pattern, '', text, flags=re.MULTILINE)
         else:
-            return re.sub(r'^https?:\/\/.*[\r\n]*', replace_with, text, flags=re.MULTILINE)
+            return re.sub(url_pattern, replace_with, text, flags=re.MULTILINE)
 
     def remove_whitespace(self, text):
         """ This function will remove 
@@ -150,12 +148,12 @@ class IslamicCoinCleaner:
         return Final_Formatted
 
     def remove_mention(self, text, replace_with=None):
+        mention_regex = r'@\w+'
         if replace_with:
-            clean_text = re.sub(r'<@[A-Za-z0-9]+', replace_with, text)
+            clean_text = re.sub(mention_regex, replace_with, text)
         else:
-            clean_text = re.sub(r'<@[A-Za-z0-9]+', '', text)
+            clean_text = re.sub(mention_regex, '', text)
         return clean_text
-
 
     def clean_hashtags(self, text, replace_with=None):
         # Define a regex pattern to match hashtags
@@ -194,7 +192,7 @@ class IslamicCoinCleaner:
     def to_lower(self, text):
         return text.lower()
 
-    def replace_special_wrods(self, text):
+    def replace_special_words(self, text):
         text = text.replace('islm coin', ' <COIN> ')
         text = text.replace('islamiccoin', ' <COIN> ')
         text = text.replace('islamic coin', ' <COIN> ')
@@ -219,7 +217,7 @@ class IslamicCoinCleaner:
     
     def clean(self, text):
         text = self.to_lower(text)
-        text = self.replace_special_wrods(text)
+        text = self.replace_special_words(text)
         text = self.replace_crypto_addresses(text, replace_with=" <ADDRESS> ")    
         text = self.accented_characters_removal(text)
         text = self.remove_url(text, replace_with=" <URL> ")
